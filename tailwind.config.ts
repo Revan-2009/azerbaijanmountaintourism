@@ -47,6 +47,11 @@ export default {
           DEFAULT: "hsl(var(--card))",
           foreground: "hsl(var(--card-foreground))",
         },
+        mountain: {
+          green: "hsl(160 45% 35%)",
+          brown: "hsl(35 40% 55%)",
+          sky: "hsl(200 60% 45%)",
+        },
         sidebar: {
           DEFAULT: "hsl(var(--sidebar-background))",
           foreground: "hsl(var(--sidebar-foreground))",
@@ -57,6 +62,17 @@ export default {
           border: "hsl(var(--sidebar-border))",
           ring: "hsl(var(--sidebar-ring))",
         },
+      },
+      fontFamily: {
+        heading: ["Georgia", "serif"],
+        body: ["system-ui", "sans-serif"],
+      },
+      backgroundImage: {
+        'gradient-hero': 'var(--gradient-hero)',
+        'gradient-mountain': 'var(--gradient-mountain)',
+      },
+      boxShadow: {
+        'card': 'var(--shadow-card)',
       },
       borderRadius: {
         lg: "var(--radius)",
