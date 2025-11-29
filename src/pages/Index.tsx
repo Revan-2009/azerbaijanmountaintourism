@@ -137,7 +137,7 @@ const Index = () => {
         
         <div className="relative z-20 text-center px-4 max-w-4xl mx-auto animate-fade-in">
           <h1 className="text-5xl md:text-7xl font-heading font-bold text-white mb-6 drop-shadow-lg">
-            Discover Azerbaijan's Hidden Mountains
+            AMT Azerbaijan Modern Tourism
           </h1>
           <p className="text-xl md:text-2xl text-white/90 mb-8 drop-shadow-md">
             Solving the domestic tourism challenge through mountain adventures
@@ -158,7 +158,7 @@ const Index = () => {
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-16">
             <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-6">
-              The Hidden Challenge
+              Challenge we fight against
             </h2>
             <div className="w-24 h-1 bg-primary mx-auto mb-8" />
           </div>
@@ -220,40 +220,14 @@ const Index = () => {
               </h2>
               <div className="w-24 h-1 bg-secondary mb-8" />
               
-              <p className="text-lg text-foreground mb-6 leading-relaxed">
-                Embark on a virtual journey through Azerbaijan's diverse mountain ranges! Our interactive game helps you discover which mountain destination matches your family's personality and preferences.
+              <p className="text-lg text-foreground leading-relaxed">
+                In our educational, promotional and engaging game we promote domestic tourism and mountain tourism. We believe that there is not enough interest to domestic mountain hiking/exploring in Azerbaijan, so we are here to promote and make people realize the stunning beauty of mountain exploration. In our game there are different modes that can people explore, first is Mountain adventure with gamified quizzes. The second game mode it a mountain runner mode, in that game mode people explore the beauty of mountains. The third, fourth and fifth game modes are Duolingo styled gamified lessons about mountains. Our sixth mode is the most engaging one. In sixth game mode people collect mountain points from answering questions, and by answering question people can get a chance to spin a wheel to get a discount on a real life mountain tour.
               </p>
-              
-              <div className="space-y-4 mb-8">
-                <div className="flex items-start gap-3">
-                  <Compass className="h-6 w-6 text-primary mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-1">Personalized Journey</h4>
-                    <p className="text-muted-foreground">Answer questions about your preferences and receive a custom mountain recommendation</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <Mountain className="h-6 w-6 text-secondary mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-1">Explore 7+ Destinations</h4>
-                    <p className="text-muted-foreground">From luxury resorts to authentic villages, discover the perfect mountain experience</p>
-                  </div>
-                </div>
-                
-                <div className="flex items-start gap-3">
-                  <Calendar className="h-6 w-6 text-accent mt-1 flex-shrink-0" />
-                  <div>
-                    <h4 className="font-semibold text-foreground mb-1">Plan Your Trip</h4>
-                    <p className="text-muted-foreground">Get detailed insights on why each destination suits your family's needs</p>
-                  </div>
-                </div>
-              </div>
 
               <Button 
                 size="lg"
                 variant="default"
-                className="bg-secondary text-secondary-foreground hover:bg-secondary/90"
+                className="bg-secondary text-secondary-foreground hover:bg-secondary/90 mt-8"
                 onClick={() => document.getElementById('form')?.scrollIntoView({ behavior: 'smooth' })}
               >
                 Start Your Journey
@@ -490,6 +464,18 @@ const Index = () => {
               </CardContent>
             </Card>
           )}
+        </div>
+      </section>
+
+      {/* Discount Cards Section */}
+      <section className="py-16 px-4 bg-background">
+        <div className="max-w-4xl mx-auto text-center">
+          <Button 
+            size="lg" 
+            className="bg-gradient-hero text-primary-foreground hover:opacity-90 transition-opacity text-xl px-12 py-8"
+          >
+            Get Discount Cards for Tours
+          </Button>
         </div>
       </section>
 
