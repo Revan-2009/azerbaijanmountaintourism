@@ -4,7 +4,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/com
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { Mountain, Users, MapPin, Calendar, Wallet, Heart, Compass } from "lucide-react";
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription } from "@/components/ui/dialog";
+import { useToast } from "@/hooks/use-toast";
+import { Mountain, Users, MapPin, Calendar, Wallet, Heart, Compass, Ticket, Tag, Mail, Upload } from "lucide-react";
 import heroImage from "@/assets/hero-mountains.jpg";
 import gameImage from "@/assets/game-section.jpg";
 
@@ -31,6 +33,77 @@ const Index = () => {
     interest: "",
   });
   const [recommendation, setRecommendation] = useState<{ mountain: string; reason: string } | null>(null);
+  const [promoDialogOpen, setPromoDialogOpen] = useState(false);
+  const [selectedTour, setSelectedTour] = useState('');
+  const [promoCode, setPromoCode] = useState('');
+  const [email, setEmail] = useState('');
+  const [selectedFile, setSelectedFile] = useState<File | null>(null);
+  const { toast } = useToast();
+
+  const tours = [
+    {
+      name: 'Shahdag Mountain Tour',
+      description: 'Experience the largest ski resort in Azerbaijan with stunning mountain views and modern facilities.',
+      price: 150,
+      duration: '2 Days / 1 Night',
+      highlights: ['Ski Resort', 'Cable Car', 'Mountain Lodge']
+    },
+    {
+      name: 'Tufandag Mountain Tour',
+      description: 'Explore the beautiful Tufandag mountain complex with breathtaking landscapes and adventure activities.',
+      price: 130,
+      duration: '2 Days / 1 Night',
+      highlights: ['Adventure Park', 'Scenic Views', 'Local Cuisine']
+    },
+    {
+      name: 'Bazarduzu Mountain Tour',
+      description: 'Conquer Azerbaijan\'s highest peak with an unforgettable trekking experience through pristine nature.',
+      price: 200,
+      duration: '3 Days / 2 Nights',
+      highlights: ['Peak Hiking', 'Camping', 'Wildlife']
+    }
+  ];
+
+  const handlePromoSubmit = () => {
+    const discounts: { [key: string]: number } = {
+      'promo1': 10,
+      'promo1.5': 15,
+      'promo2': 20,
+      'promo3': 30,
+      'promo5': 50
+    };
+
+    const discount = discounts[promoCode.toLowerCase()];
+    
+    if (discount) {
+      const tour = tours.find(t => t.name === selectedTour);
+      if (tour) {
+        const finalPrice = tour.price * (1 - discount / 100);
+        toast({
+          title: "Promo Code Applied!",
+          description: `${discount}% discount applied! Final price: $${finalPrice.toFixed(2)}`,
+        });
+      }
+      setPromoDialogOpen(false);
+      setPromoCode('');
+    } else {
+      toast({
+        title: "Invalid Promo Code",
+        description: "Please enter a valid promo code.",
+        variant: "destructive"
+      });
+    }
+  };
+
+  const handleContactSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    toast({
+      title: "Message Sent!",
+      description: "We've received your email and image. We'll get back to you soon!",
+    });
+    setEmail('');
+    setSelectedFile(null);
+  };
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -467,6 +540,85 @@ const Index = () => {
         </div>
       </section>
 
+      {/* Available Tours Section */}
+      <section className="py-20 px-4 bg-muted/30">
+        <div className="max-w-7xl mx-auto">
+          <div className="text-center mb-16">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-6">
+              Available Mountain Tours
+            </h2>
+            <div className="w-24 h-1 bg-primary mx-auto mb-6" />
+            <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+              Book your adventure today and explore Azerbaijan's magnificent mountains
+            </p>
+          </div>
+
+          <div className="grid md:grid-cols-3 gap-8">
+            {tours.map((tour) => (
+              <Card key={tour.name} className="overflow-hidden hover:shadow-xl transition-shadow">
+                <CardContent className="p-6">
+                  <Mountain className="h-12 w-12 text-primary mb-4" />
+                  <h3 className="text-2xl font-heading font-bold text-foreground mb-3">
+                    {tour.name}
+                  </h3>
+                  <p className="text-muted-foreground mb-4">
+                    {tour.description}
+                  </p>
+                  
+                  <div className="space-y-2 mb-4">
+                    <div className="flex items-center gap-2 text-sm text-foreground">
+                      <Calendar className="h-4 w-4 text-primary" />
+                      <span>{tour.duration}</span>
+                    </div>
+                    <div className="flex items-center gap-2 text-sm text-foreground">
+                      <Tag className="h-4 w-4 text-primary" />
+                      <span className="font-semibold text-xl">${tour.price}</span>
+                    </div>
+                  </div>
+
+                  <div className="mb-6">
+                    <p className="text-sm font-semibold text-foreground mb-2">Highlights:</p>
+                    <div className="flex flex-wrap gap-2">
+                      {tour.highlights.map((highlight) => (
+                        <span key={highlight} className="text-xs bg-primary/10 text-primary px-2 py-1 rounded">
+                          {highlight}
+                        </span>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className="space-y-2">
+                    <Button 
+                      className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                      onClick={() => {
+                        toast({
+                          title: "Redirecting to checkout...",
+                          description: `Booking ${tour.name}`,
+                        });
+                      }}
+                    >
+                      <Ticket className="h-4 w-4 mr-2" />
+                      Buy Tickets
+                    </Button>
+                    <Button 
+                      variant="outline"
+                      className="w-full"
+                      onClick={() => {
+                        setSelectedTour(tour.name);
+                        setPromoDialogOpen(true);
+                      }}
+                    >
+                      <Tag className="h-4 w-4 mr-2" />
+                      Use Promocode and Buy Tickets
+                    </Button>
+                  </div>
+                </CardContent>
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Discount Cards Section */}
       <section className="py-16 px-4 bg-background">
         <div className="max-w-4xl mx-auto text-center">
@@ -478,6 +630,125 @@ const Index = () => {
           </Button>
         </div>
       </section>
+
+      {/* Contact Section */}
+      <section className="py-20 px-4 bg-muted/30">
+        <div className="max-w-2xl mx-auto">
+          <div className="text-center mb-12">
+            <h2 className="text-4xl md:text-5xl font-heading font-bold text-foreground mb-6">
+              Send Us Your Photos
+            </h2>
+            <div className="w-24 h-1 bg-primary mx-auto mb-6" />
+            <p className="text-lg text-muted-foreground">
+              Share your mountain adventure photos with us!
+            </p>
+          </div>
+
+          <Card>
+            <CardContent className="p-8">
+              <form onSubmit={handleContactSubmit} className="space-y-6">
+                <div>
+                  <Label htmlFor="email" className="text-foreground mb-2 block">
+                    <Mail className="h-4 w-4 inline mr-2" />
+                    Your Gmail Address
+                  </Label>
+                  <Input
+                    id="email"
+                    type="email"
+                    placeholder="your.email@gmail.com"
+                    value={email}
+                    onChange={(e) => setEmail(e.target.value)}
+                    required
+                    className="w-full"
+                  />
+                </div>
+
+                <div>
+                  <Label htmlFor="file" className="text-foreground mb-2 block">
+                    <Upload className="h-4 w-4 inline mr-2" />
+                    Upload Image
+                  </Label>
+                  <Input
+                    id="file"
+                    type="file"
+                    accept="image/*"
+                    onChange={(e) => setSelectedFile(e.target.files?.[0] || null)}
+                    required
+                    className="w-full"
+                  />
+                  {selectedFile && (
+                    <p className="text-sm text-muted-foreground mt-2">
+                      Selected: {selectedFile.name}
+                    </p>
+                  )}
+                </div>
+
+                <Button 
+                  type="submit" 
+                  className="w-full bg-primary text-primary-foreground hover:bg-primary/90"
+                  size="lg"
+                >
+                  Send Image
+                </Button>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </section>
+
+      {/* Promo Code Dialog */}
+      <Dialog open={promoDialogOpen} onOpenChange={setPromoDialogOpen}>
+        <DialogContent>
+          <DialogHeader>
+            <DialogTitle>Enter Promo Code</DialogTitle>
+            <DialogDescription>
+              Apply your promo code for {selectedTour} and get instant discounts!
+            </DialogDescription>
+          </DialogHeader>
+          
+          <div className="space-y-4 mt-4">
+            <div>
+              <Label htmlFor="promo">Promo Code</Label>
+              <Input
+                id="promo"
+                placeholder="Enter promo code"
+                value={promoCode}
+                onChange={(e) => setPromoCode(e.target.value)}
+                className="mt-2"
+              />
+            </div>
+
+            <div className="bg-muted p-4 rounded-lg">
+              <p className="text-sm font-semibold mb-2">Available Promo Codes:</p>
+              <ul className="text-sm space-y-1 text-muted-foreground">
+                <li>• promo1 - 10% discount</li>
+                <li>• promo1.5 - 15% discount</li>
+                <li>• promo2 - 20% discount</li>
+                <li>• promo3 - 30% discount</li>
+                <li>• promo5 - 50% discount</li>
+              </ul>
+            </div>
+
+            <div className="flex gap-2">
+              <Button 
+                onClick={handlePromoSubmit}
+                className="flex-1"
+              >
+                Apply & Continue
+              </Button>
+              <Button 
+                variant="outline"
+                onClick={() => {
+                  setPromoDialogOpen(false);
+                  setPromoCode('');
+                }}
+              >
+                Cancel
+              </Button>
+            </div>
+          </div>
+        </DialogContent>
+      </Dialog>
 
       {/* Footer */}
       <footer className="bg-primary text-primary-foreground py-12 px-4">
